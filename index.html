@@ -79,6 +79,40 @@ function shiftGear(gear) {
     currentGear = gear;
   }
 }
+document.getElementById('gearUp').addEventListener('click', () => {
+  if (clutch > 0.5 || speed < 0.5) {
+    shiftGear(Math.min(12, currentGear + 1));
+  }
+});
+
+document.getElementById('gearDown').addEventListener('click', () => {
+  if (clutch > 0.5 || speed < 0.5) {
+    shiftGear(Math.max(0, currentGear - 1));
+  }
+});
+
+const clutchBtn = document.getElementById('clutchBtn');
+
+clutchBtn.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  clutch = 1;
+  clutchBtn.classList.add('down');
+});
+
+function releaseClutch() {
+  clutch = 0;
+  clutchBtn.classList.remove('down');
+}
+
+clutchBtn.addEventListener('pointerup', releaseClutch);
+clutchBtn.addEventListener('pointercancel', releaseClutch);
+clutchBtn.addEventListener('lostpointercapture', releaseClutch);
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  restartEngine();
+  document.getElementById('hint').textContent = 'Engine started!';
+});
+  
 
 function restartEngine() {
   engineOn = true;
