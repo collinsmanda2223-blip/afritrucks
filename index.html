@@ -45,6 +45,39 @@ box(chassis,.09,1.5,.1,chrome,-.95,2.25,-.4);box(chassis,.09,1.5,.1,chrome,.95,2
 const sign=new THREE.Group();box(sign,3,.95,.15,blue,0,3,0);box(sign,.12,2.3,.12,chrome,0,1.45,0);scene.add(sign);sign.position.set(9,0,-45);
 // cabin camera position is relative to truck
 let speed=0,steer=0,travel=0,camMode=0,started=false;const held={left:false,right:false,gas:false,brake:false};
+/* AFRITRUCKS: REALISTIC MANUAL TRANSMISSION */
+let currentGear = 0; // 0 = Neutral, 1–12 = forward gears
+let clutch = 0;     // 0 = released, 1 = fully pressed
+let engineOn = true;
+let engineRPM = 800;
+
+const gearRatios = [
+  0,  // Neutral
+  12.0,  // Gear 1
+  9.0,   // Gear 2
+  6.8,   // Gear 3
+  5.2,   // Gear 4
+  4.0,   // Gear 5
+  3.2,   // Gear 6
+  2.6,   // Gear 7
+  2.1,   // Gear 8
+  1.7,   // Gear 9
+  1.4,   // Gear 10
+  1.15,  // Gear 11
+  0.95   // Gear 12
+];
+
+function shiftGear(gear) {
+  if (gear >= 0 && gear <= 12) {
+    currentGear = gear;
+  }
+}
+
+function restartEngine() {
+  engineOn = true;
+  engineRPM = 800;
+  }
+  
 const cameraBtn=document.getElementById('camera');cameraBtn.addEventListener('click',()=>{camMode=(camMode+1)%2;cameraBtn.textContent='CAMERA: '+(camMode?'CABIN':'CHASE')});
 const intro=document.getElementById('intro');document.getElementById('start').addEventListener('click',()=>{started=true;intro.classList.add('hide');document.getElementById('hint').textContent='Drive safely! Follow the road and enjoy Zambia.';setTimeout(()=>document.getElementById('hint').style.opacity='.35',5000)});
 document.querySelectorAll('[data-control]').forEach(b=>{const k=b.dataset.control;const down=e=>{e.preventDefault();held[k]=true;b.classList.add('down');try{b.setPointerCapture(e.pointerId)}catch(_){}};const up=e=>{e.preventDefault();held[k]=false;b.classList.remove('down')};b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up)});
