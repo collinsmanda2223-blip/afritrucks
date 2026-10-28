@@ -9,6 +9,13 @@
 <div id="game"></div>
 <div id="hud"><div class="top"><div class="brand"><strong>🚛 AFRITRUCKS</strong><small>ZAMBIA RUN • TEST DRIVE</small></div><div class="mission"><b>DELIVERY 01</b><br>Drive the Great North Road<br><small>Distance: <span id="distance">0.0</span> km</small></div></div><div class="speedbox"><div class="speed"><span id="speed">0</span> <small>KM/H</small></div><small id="gear">GEAR: N</small></div><button class="btn smallbtn" id="camera">CAMERA: CHASE</button><div class="hint" id="hint">Hold ▲ to accelerate • ◀ ▶ to steer</div></div>
 <div class="controls"><div class="cluster"><button class="btn steer" data-control="left" aria-label="Steer left">◀</button><button class="btn steer" data-control="right" aria-label="Steer right">▶</button></div><div class="cluster"><button class="btn pedal" data-control="brake">BRAKE</button><button class="btn pedal" data-control="gas">▲<br>GAS</button></div></div>
+<div id="gearControls" style="position:fixed;right:12px;top:145px;z-index:3;display:flex;gap:6px;flex-wrap:wrap;max-width:190px">
+  <button class="btn" id="gearDown" style="min-width:54px;height:48px;font-size:12px">GEAR −</button>
+  <button class="btn" id="gearUp" style="min-width:54px;height:48px;font-size:12px">GEAR +</button>
+  <button class="btn" id="clutchBtn" style="min-width:114px;height:48px;font-size:12px">CLUTCH</button>
+  <button class="btn" id="restartBtn" style="min-width:114px;height:48px;font-size:12px">START ENGINE</button>
+</div>
+  
 <div class="overlay" id="intro"><div class="panel"><h1>🚛 AfriTrucks</h1><b>African Truck Driving Simulator</b><p>Take your first drive in a modern heavy-duty truck on a Zambia-inspired highway, with green countryside, red earth and roadside villages.</p><p><b>Controls:</b> Hold GAS to move, use the arrows to steer, BRAKE to slow down, and switch between chase and cabin cameras.</p><button class="start" id="start">START ENGINE</button><p class="muted">Prototype 0.1 • Built for Android Chrome • Internet connection needed to load the 3D engine.</p></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
