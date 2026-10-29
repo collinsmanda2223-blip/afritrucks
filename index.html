@@ -1,154 +1,736 @@
+
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#102b35"><title>AfriTrucks — Zambia Run</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#102b35">
+<title>AfriTrucks — Zambia Run</title>
+
 <style>
-j*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#9bd4ed;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;touch-action:none}#game{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}#hud{position:fixed;inset:0;pointer-events:none;color:#fff;text-shadow:0 2px 5px #071a20} .top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.brand,.mission,.speedbox{background:#102b35d9;border:1px solid #ffffff35;border-radius:14px;padding:10px 12px;backdrop-filter:blur(6px)}.brand strong{display:block;font-size:18px;letter-spacing:.7px}.brand small,.mission small{opacity:.82}.mission{max-width:48%;font-size:12px}.speedbox{position:absolute;left:12px;bottom:150px;min-width:105px}.speed{font-size:30px;font-weight:800;line-height:1}.speed small{font-size:11px;font-weight:500}.controls{position:fixed;left:0;right:0;bottom:16px;display:flex;justify-content:space-between;align-items:end;padding:0 14px;gap:12px;pointer-events:none}.cluster{display:flex;gap:10px;align-items:end;pointer-events:auto}.btn{border:1px solid #ffffff55;background:#102b35dc;color:white;border-radius:18px;min-width:62px;height:62px;font-size:23px;font-weight:800;box-shadow:0 5px 15px #071a2040;touch-action:none;user-select:none;-webkit-user-select:none}.btn:active,.btn.down{background:#e4a62b;color:#102b35;transform:scale(.97)}.pedal{height:74px;min-width:66px;font-size:14px}.steer{font-size:28px}.smallbtn{position:fixed;right:12px;top:94px;pointer-events:auto;height:42px;min-width:auto;padding:0 12px;font-size:12px;border-radius:12px}.hint{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#102b35b8;padding:7px 11px;border-radius:99px;font-size:11px;opacity:.92}.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;background:#071a20aa;z-index:5}.panel{max-width:440px;width:100%;background:#f5f8f6;color:#17313a;border-radius:24px;padding:24px;box-shadow:0 20px 70px #0005}.panel h1{margin:0 0 5px;font-size:30px}.panel p{line-height:1.45}.start{background:#e4a62b;color:#172e36;border:0;border-radius:14px;padding:14px 18px;font-size:16px;font-weight:800;width:100%;margin-top:8px}.muted{font-size:12px;color:#52666b}.hide{display:none!important}@media(min-width:800px){.btn{min-width:76px;height:76px}.pedal{height:82px;min-width:82px}.speedbox{bottom:125px}}
-</style></head><body>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;
+background:#9bcde0;font-family:Arial,system-ui,sans-serif;
+touch-action:none;user-select:none;-webkit-user-select:none}
+#game{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100%}
+button,select{font:inherit;touch-action:manipulation}
+#hud{position:fixed;inset:0;color:white;pointer-events:none;
+text-shadow:0 2px 5px #071a20}
+.top{position:absolute;top:10px;left:10px;right:10px;
+display:flex;justify-content:space-between;gap:8px;align-items:start}
+.glass{background:#102b35df;border:1px solid #ffffff35;
+border-radius:12px;padding:9px 11px;backdrop-filter:blur(8px)}
+.brand strong{display:block;font-size:17px;letter-spacing:1px}
+.brand small,.mission small{font-size:10px;opacity:.8}
+.mission{font-size:11px}
+.speedbox{position:absolute;left:12px;bottom:142px;min-width:110px}
+.speed{font-size:32px;font-weight:900;line-height:1.1}
+.speed small{font-size:10px;font-weight:500}
+#gear{font-size:15px;font-weight:800}
+#rpm{font-size:11px}
+#status{font-size:10px;margin-top:3px}
+.controls{position:fixed;left:0;right:0;bottom:13px;
+display:flex;justify-content:space-between;align-items:end;
+padding:0 12px;gap:8px;pointer-events:none}
+.cluster{display:flex;gap:7px;align-items:end;pointer-events:auto}
+.btn{border:1px solid #ffffff50;background:#102b35e8;color:white;
+border-radius:15px;min-width:53px;height:58px;
+font-size:21px;font-weight:800;box-shadow:0 4px 12px #0004}
+.btn:active,.btn.down{background:#e4a62b;color:#102b35}
+.pedal{height:70px;min-width:59px;font-size:12px}
+.utility{position:fixed;right:10px;top:105px;display:flex;
+flex-direction:column;gap:6px;pointer-events:auto;align-items:end}
+.utility .btn{height:38px;min-width:90px;font-size:11px;
+border-radius:10px;padding:0 10px}
+.gears{display:flex;gap:5px;flex-wrap:wrap;max-width:185px;
+justify-content:end;pointer-events:auto}
+.gears .btn{height:39px;min-width:48px;font-size:11px;
+border-radius:10px}
+.hint{position:absolute;bottom:92px;left:50%;
+transform:translateX(-50%);white-space:nowrap;
+background:#102b35c9;padding:7px 10px;border-radius:30px;
+font-size:10px;max-width:90%;overflow:hidden}
+.overlay{position:fixed;inset:0;z-index:10;
+display:flex;align-items:center;justify-content:center;
+padding:18px;background:#071a20c9;overflow:auto}
+.panel{width:100%;max-width:420px;background:#f4f6f3;color:#18323a;
+border-radius:22px;padding:22px;box-shadow:0 20px 70px #0006}
+.panel h1{margin:0 0 5px;font-size:27px}
+.panel p{font-size:14px;line-height:1.5}
+.panel label{display:block;font-weight:700;margin:12px 0 5px}
+.panel select{width:100%;padding:12px;border:1px solid #aab9bb;
+border-radius:10px;background:white;color:#17313a}
+.start{width:100%;padding:14px;border:0;border-radius:12px;
+background:#e4a62b;color:#172e36;font-weight:900;font-size:15px;
+margin-top:10px}
+.secondary{background:#17313a;color:white}
+.muted{font-size:11px!important;color:#607277}
+.hide{display:none!important}
+#settingsButton{position:fixed;top:10px;right:10px}
+@media(max-width:380px){
+ .brand strong{font-size:14px}.mission{font-size:9px}
+ .btn{min-width:46px;height:53px}.pedal{min-width:51px}
+ .utility{top:99px}.gears{max-width:155px}
+ .gears .btn{min-width:43px;height:35px}
+ .speedbox{bottom:130px}
+}
+</style>
+</head>
+
+<body>
 <div id="game"></div>
-<div id="hud"><div class="top"><div class="brand"><strong>🚛 AFRITRUCKS</strong><small>ZAMBIA RUN • TEST DRIVE</small></div><div class="mission"><b>DELIVERY 01</b><br>Drive the Great North Road<br><small>Distance: <span id="distance">0.0</span> km</small></div></div><div class="speedbox"><div class="speed"><span id="speed">0</span> <small>KM/H</small></div><small id="gear">GEAR: N</small></div><button class="btn smallbtn" id="camera">CAMERA: CHASE</button><div class="hint" id="hint">Hold ▲ to accelerate • ◀ ▶ to steer</div></div>
-<div class="controls"><div class="cluster"><button class="btn steer" data-control="left" aria-label="Steer left">◀</button><button class="btn steer" data-control="right" aria-label="Steer right">▶</button></div><div class="cluster"><button class="btn pedal" data-control="brake">BRAKE</button><button class="btn pedal" data-control="gas">▲<br>GAS</button></div></div>
-<div id="gearControls" style="position:fixed;right:12px;top:145px;z-index:3;display:flex;gap:6px;flex-wrap:wrap;max-width:190px">
-  <button class="btn" id="gearDown" style="min-width:54px;height:48px;font-size:12px">GEAR −</button>
-  <button class="btn" id="gearUp" style="min-width:54px;height:48px;font-size:12px">GEAR +</button>
-  <button class="btn" id="clutchBtn" style="min-width:114px;height:48px;font-size:12px">CLUTCH</button>
-  <button class="btn" id="restartBtn" style="min-width:114px;height:48px;font-size:12px">START ENGINE</button>
+
+<div id="hud">
+ <div class="top">
+  <div class="brand glass">
+   <strong>🚛 AFRITRUCKS</strong>
+   <small>ZAMBIA RUN • TRUCK SIMULATOR</small>
+  </div>
+  <div class="mission glass">
+   <b>DELIVERY 01</b><br>
+   GREAT NORTH ROAD<br>
+   <small>Distance: <span id="distance">0.00</span> km</small>
+  </div>
+ </div>
+
+ <div class="speedbox glass">
+  <div class="speed"><span id="speed">0</span> <small>KM/H</small></div>
+  <div id="gear">GEAR: N</div>
+  <div id="rpm">ENGINE: 800 RPM</div>
+  <div id="status">ENGINE OFF</div>
+ </div>
+
+ <div class="utility">
+  <button class="btn" id="camera">CAMERA: CHASE</button>
+  <button class="btn" id="settingsButton">SETTINGS ⚙</button>
+  <div class="gears" id="manualControls">
+   <button class="btn" id="gearDown">GEAR −</button>
+   <button class="btn" id="gearUp">GEAR +</button>
+   <button class="btn" id="clutchBtn">CLUTCH</button>
+   <button class="btn" id="restartBtn">START ENGINE</button>
+  </div>
+  <div class="gears hide" id="autoControls">
+   <button class="btn" data-range="R">REVERSE</button>
+   <button class="btn" data-range="N">NEUTRAL</button>
+   <button class="btn" data-range="D">DRIVE</button>
+  </div>
+ </div>
+
+ <div class="hint" id="hint">Start the engine • Hold GAS to drive</div>
 </div>
-  
-<div class="overlay" id="intro"><div class="panel"><h1>🚛 AfriTrucks</h1><b>African Truck Driving Simulator</b><p>Take your first drive in a modern heavy-duty truck on a Zambia-inspired highway, with green countryside, red earth and roadside villages.</p><p><b>Controls:</b> Hold GAS to move, use the arrows to steer, BRAKE to slow down, and switch between chase and cabin cameras.</p><button class="start" id="start">START ENGINE</button><p class="muted">Prototype 0.1 • Built for Android Chrome • Internet connection needed to load the 3D engine.</p></div></div>
+
+<div class="controls">
+ <div class="cluster">
+  <button class="btn" data-control="left" aria-label="Steer left">◀</button>
+  <button class="btn" data-control="right" aria-label="Steer right">▶</button>
+ </div>
+ <div class="cluster">
+  <button class="btn pedal" data-control="brake">BRAKE</button>
+  <button class="btn pedal" data-control="gas">▲<br>GAS</button>
+ </div>
+</div>
+
+<div class="overlay" id="intro">
+ <div class="panel">
+  <h1>🚛 AfriTrucks</h1>
+  <b>Zambia Run • Heavy Truck Simulator</b>
+  <p>Drive a heavy truck through a Zambia-inspired countryside.
+  Choose between a 12-speed manual transmission and automatic driving.</p>
+  <label for="startMode">Transmission</label>
+  <select id="startMode">
+   <option value="manual">Manual — 12 speeds</option>
+   <option value="automatic">Automatic</option>
+  </select>
+  <button class="start" id="start">START DRIVING</button>
+  <p class="muted">3D graphics require WebGL and an internet connection
+  to load the Three.js engine.</p>
+ </div>
+</div>
+
+<div class="overlay hide" id="settings">
+ <div class="panel">
+  <h1>Driving settings</h1>
+  <p>Choose how you want to drive. Manual is the default mode.</p>
+  <label for="transmission">Transmission mode</label>
+  <select id="transmission">
+   <option value="manual">Manual — 12 speeds</option>
+   <option value="automatic">Automatic</option>
+  </select>
+  <button class="start" id="applySettings">APPLY SETTINGS</button>
+  <button class="start secondary" id="closeSettings">RESUME DRIVING</button>
+  <p class="muted">Changing transmission while moving is permitted
+  in this prototype. Stop before changing for a more realistic experience.</p>
+ </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (()=>{
-const root=document.getElementById('game'); if(!window.THREE){document.getElementById('hint').textContent='3D engine did not load. Check internet and reopen.';return;}
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x9bd7f0);scene.fog=new THREE.Fog(0x9bd7f0,90,360);
-const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,800);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;root.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xe7f7ff,0x78613b,1.45));const sun=new THREE.DirectionalLight(0xfff1d2,1.5);sun.position.set(-35,65,35);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
-const mat=(c,r=.85,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
-const green=mat(0x668e45),green2=mat(0x809c4d),red=mat(0x9e6241),roadmat=mat(0x343b3d),white=mat(0xf4f0dc),yellow=mat(0xe6b746),black=mat(0x172126),blue=mat(0x174f79,.4,.35),glass=mat(0x8fc8d8,.22,.1),rubber=mat(0x171a1c),chrome=mat(0x9ba8ac,.25,.75);
-function box(parent,w,h,d,material,x,y,z){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
-// Ground and road, long enough for an endless-feeling first drive
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(700,700),green);ground.rotation.x=-Math.PI/2;ground.position.y=-.08;ground.receiveShadow=true;scene.add(ground);
-const road=new THREE.Mesh(new THREE.PlaneGeometry(13,650),roadmat);road.rotation.x=-Math.PI/2;road.position.set(0,.005,-240);road.receiveShadow=true;scene.add(road);
-// shoulders and centre markings
-for(const x of [-6.8,6.8]){const edge=new THREE.Mesh(new THREE.BoxGeometry(.18,.035,650),yellow);edge.position.set(x,.04,-240);scene.add(edge)}
-const dashes=[];for(let z=65;z>-570;z-=13){const dash=new THREE.Mesh(new THREE.BoxGeometry(.16,.035,5.5),white);dash.position.set(0,.05,z);scene.add(dash);dashes.push(dash)}
-// distant low hills
-for(let i=0;i<28;i++){let x=(i%2?1:-1)*(60+Math.random()*150),z=-Math.random()*600;let hill=new THREE.Mesh(new THREE.ConeGeometry(18+Math.random()*25,15+Math.random()*30,7),i%3===0?red:green2);hill.position.set(x,5+Math.random()*7,z);hill.scale.z=1.6;hill.receiveShadow=true;scene.add(hill)}
-// acacia-ish trees and roadside huts
-const scenery=[];function makeTree(x,z){const g=new THREE.Group();const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.22,.38,3,7),red);trunk.position.y=1.5;trunk.castShadow=true;g.add(trunk);const crown=new THREE.Mesh(new THREE.SphereGeometry(1.7,8,6),green2);crown.scale.set(1.35,.48,1);crown.position.y=3.35;crown.castShadow=true;g.add(crown);g.position.set(x,0,z);scene.add(g);scenery.push(g)}
-for(let z=45;z>-580;z-=13){makeTree(-11-Math.random()*22,z-Math.random()*7);makeTree(11+Math.random()*22,z-Math.random()*7);if(Math.random()<.23){const x=(Math.random()<.5?-1:1)*(16+Math.random()*10);const hut=new THREE.Group();box(hut,4,2.1,3,mat(0xc8a477),0,1.05,0);const roof=new THREE.Mesh(new THREE.ConeGeometry(2.9,1.5,4),mat(0x8e4934));roof.rotation.y=Math.PI/4;roof.position.y=2.75;hut.add(roof);hut.position.set(x,0,z-4);scene.add(hut);scenery.push(hut)}}
-// truck model, facing -Z
-const truck=new THREE.Group();scene.add(truck);const chassis=new THREE.Group();truck.add(chassis);
-box(chassis,2.2,.55,5.2,black,0,1.05,.15);box(chassis,2.45,.62,2.3,blue,0,1.65,-1.2);box(chassis,2.18,1.3,1.75,blue,0,2.5,-1.18);box(chassis,1.8,.66,.1,glass,0,2.73,-2.075);box(chassis,1.5,.56,.12,glass,0,2.72,-.28);box(chassis,.22,.9,.1,chrome,-.93,2.43,-2.1);box(chassis,.22,.9,.1,chrome,.93,2.43,-2.1);box(chassis,2.3,.22,.16,white,0,1.58,-2.25);box(chassis,.28,.2,.08,white,-.8,1.8,-2.28);box(chassis,.28,.2,.08,white,.8,1.8,-2.28);box(chassis,2.35,.16,.2,black,0,1.1,-2.32);
-// trailer
-box(chassis,2.38,2.65,6.6,mat(0xe8e7df),0,2.25,4.95);box(chassis,2.42,.15,6.65,blue,0,.95,4.95);for(const z of [2.2,4.1,6,7.9]){box(chassis,.08,2.45,.08,chrome,-1.2,2.25,z);box(chassis,.08,2.45,.08,chrome,1.2,2.25,z)}
-const wheels=[];function wheel(x,z){const w=new THREE.Mesh(new THREE.CylinderGeometry(.48,.48,.32,16),rubber);w.rotation.z=Math.PI/2;w.position.set(x,.55,z);w.castShadow=true;chassis.add(w);wheels.push(w);const hub=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.34,12),chrome);hub.rotation.z=Math.PI/2;hub.position.copy(w.position);chassis.add(hub)}
-for(const z of [-1.55,.2,3.7,5.1,6.5,7.2]){wheel(-1.2,z);wheel(1.2,z)}
-// cabin detail and exhaust
-box(chassis,.09,1.5,.1,chrome,-.95,2.25,-.4);box(chassis,.09,1.5,.1,chrome,.95,2.25,-.4);box(chassis,.12,1.5,.12,black,-1.03,2.05,.1);box(chassis,.12,1.5,.12,black,1.03,2.05,.1);
-// roadside sign
-const sign=new THREE.Group();box(sign,3,.95,.15,blue,0,3,0);box(sign,.12,2.3,.12,chrome,0,1.45,0);scene.add(sign);sign.position.set(9,0,-45);
-// cabin camera position is relative to truck
-let speed=0,steer=0,travel=0,camMode=0,started=false;const held={left:false,right:false,gas:false,brake:false};
-/* AFRITRUCKS: REALISTIC MANUAL TRANSMISSION */
-let currentGear = 0; // 0 = Neutral, 1–12 = forward gears
-let clutch = 0;     // 0 = released, 1 = fully pressed
-let engineOn = true;
-let engineRPM = 800;
+"use strict";
 
-const gearRatios = [
-  0,  // Neutral
-  12.0,  // Gear 1
-  9.0,   // Gear 2
-  6.8,   // Gear 3
-  5.2,   // Gear 4
-  4.0,   // Gear 5
-  3.2,   // Gear 6
-  2.6,   // Gear 7
-  2.1,   // Gear 8
-  1.7,   // Gear 9
-  1.4,   // Gear 10
-  1.15,  // Gear 11
-  0.95   // Gear 12
+const $=id=>document.getElementById(id);
+const root=$("game");
+
+if(!window.THREE){
+ $("hint").textContent="3D engine failed to load. Check your internet.";
+ return;
+}
+
+/* SCENE AND LIGHTING */
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xa4d3e8);
+scene.fog=new THREE.Fog(0xa4d3e8,100,480);
+
+const camera=new THREE.PerspectiveCamera(
+ 66,innerWidth/innerHeight,.1,1000
+);
+
+const renderer=new THREE.WebGLRenderer({
+ antialias:true,alpha:false
+});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;
+root.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xe5f5ff,0x65503a,1.65));
+
+const sun=new THREE.DirectionalLight(0xffedcf,2);
+sun.position.set(-35,65,30);
+sun.castShadow=true;
+sun.shadow.mapSize.set(1024,1024);
+sun.shadow.camera.left=-45;
+sun.shadow.camera.right=45;
+sun.shadow.camera.top=70;
+sun.shadow.camera.bottom=-70;
+scene.add(sun);
+
+const mat=(color,roughness=.8,metalness=0)=>
+ new THREE.MeshStandardMaterial({color,roughness,metalness});
+
+const M={
+ grass:mat(0x708d4b),
+ grass2:mat(0x8a9c56),
+ soil:mat(0x946548),
+ asphalt:mat(0x34383a),
+ line:mat(0xe8dfbd),
+ yellow:mat(0xe7b93e),
+ black:mat(0x171b1d),
+ rubber:mat(0x181a1b),
+ chrome:mat(0xaebbc0,.28,.72),
+ blue:mat(0x174c75,.38,.3),
+ glass:mat(0x8fcbdc,.22,.12),
+ white:mat(0xe9e8dd),
+ red:mat(0x963d30),
+ light:mat(0xfff0bf,.25),
+ darkglass:mat(0x263f4a,.3,.2)
+};
+
+function box(parent,w,h,d,material,x,y,z){
+ const mesh=new THREE.Mesh(
+  new THREE.BoxGeometry(w,h,d),material
+ );
+ mesh.position.set(x,y,z);
+ mesh.castShadow=true;
+ mesh.receiveShadow=true;
+ parent.add(mesh);
+ return mesh;
+}
+
+/* LANDSCAPE */
+const ground=new THREE.Mesh(
+ new THREE.PlaneGeometry(1200,1200),M.grass
+);
+ground.rotation.x=-Math.PI/2;
+ground.position.y=-.12;
+ground.receiveShadow=true;
+scene.add(ground);
+
+const soil=new THREE.Mesh(
+ new THREE.PlaneGeometry(22,1100),M.soil
+);
+soil.rotation.x=-Math.PI/2;
+soil.position.set(0,-.07,-250);
+scene.add(soil);
+
+const road=new THREE.Mesh(
+ new THREE.PlaneGeometry(13,700),M.asphalt
+);
+road.rotation.x=-Math.PI/2;
+road.position.set(0,0,-270);
+road.receiveShadow=true;
+scene.add(road);
+
+for(const x of [-6.55,6.55]){
+ const edge=box(scene,.16,.04,700,M.line,x,.025,-270);
+ edge.receiveShadow=true;
+}
+
+const dashes=[];
+for(let z=75;z>-620;z-=13){
+ const d=box(scene,.16,.035,5,M.line,0,.04,z);
+ dashes.push(d);
+}
+
+/* TREES, HILLS AND VILLAGE BUILDINGS */
+const scenery=[];
+
+function tree(x,z,scale=1){
+ const g=new THREE.Group();
+ const trunk=new THREE.Mesh(
+  new THREE.CylinderGeometry(.18,.34,3.2,8),M.soil
+ );
+ trunk.position.y=1.6;
+ trunk.castShadow=true;
+ g.add(trunk);
+
+ const crown=new THREE.Mesh(
+  new THREE.SphereGeometry(1.8,10,7),M.grass2
+ );
+ crown.scale.set(1.45,.48,1);
+ crown.position.y=3.5;
+ crown.castShadow=true;
+ g.add(crown);
+
+ g.scale.setScalar(scale);
+ g.position.set(x,0,z);
+ scene.add(g);
+ scenery.push(g);
+}
+
+function hut(x,z){
+ const g=new THREE.Group();
+ const wall=mat(0xc6a57c);
+ const roofmat=mat(0x8e4934);
+ box(g,4,2.1,3,wall,0,1.05,0);
+
+ const roof=new THREE.Mesh(
+  new THREE.ConeGeometry(2.9,1.4,4),roofmat
+ );
+ roof.rotation.y=Math.PI/4;
+ roof.position.y=2.75;
+ roof.castShadow=true;
+ g.add(roof);
+
+ box(g,.8,1.35,.07,M.red,0,.67,-1.54);
+ g.position.set(x,0,z);
+ scene.add(g);
+ scenery.push(g);
+}
+
+for(let z=55;z>-610;z-=14){
+ tree(-11-Math.random()*25,z-Math.random()*6,.7+Math.random()*.5);
+ tree(11+Math.random()*25,z-Math.random()*6,.7+Math.random()*.5);
+
+ if(Math.random()<.18){
+  const side=Math.random()<.5?-1:1;
+  hut(side*(17+Math.random()*12),z-4);
+ }
+}
+
+for(let i=0;i<35;i++){
+ const hill=new THREE.Mesh(
+  new THREE.ConeGeometry(18+Math.random()*28,
+   15+Math.random()*28,8),
+  i%3===0?M.soil:M.grass2
+ );
+ hill.position.set(
+  (Math.random()<.5?-1:1)*(55+Math.random()*160),
+  4+Math.random()*8,
+  -Math.random()*650
+ );
+ hill.scale.z=1.5;
+ hill.receiveShadow=true;
+ scene.add(hill);
+}
+
+/* TRUCK AND TRAILER */
+const truck=new THREE.Group();
+scene.add(truck);
+
+const chassis=new THREE.Group();
+truck.add(chassis);
+
+box(chassis,2.25,.48,5.3,M.black,0,1.05,.1);
+
+/* Cab */
+box(chassis,2.45,.65,2.35,M.blue,0,1.65,-1.15);
+box(chassis,2.18,1.45,1.82,M.blue,0,2.55,-1.2);
+box(chassis,1.76,.68,.06,M.darkglass,0,2.77,-2.125);
+box(chassis,1.62,.5,.06,M.darkglass,0,2.13,-2.13);
+box(chassis,1.6,.55,.1,M.glass,0,2.75,-.27);
+
+/* Front grille, bumper and lights */
+box(chassis,.75,.8,.07,M.black,0,1.9,-2.14);
+for(let i=0;i<5;i++){
+ box(chassis,.66,.035,.08,M.chrome,0,1.6+i*.13,-2.19);
+}
+box(chassis,2.35,.2,.22,M.chrome,0,1.12,-2.25);
+box(chassis,.32,.2,.1,M.light,-.84,1.83,-2.24);
+box(chassis,.32,.2,.1,M.light,.84,1.83,-2.24);
+
+/* Mirrors, steps and exhausts */
+for(const side of [-1,1]){
+ box(chassis,.1,.9,.12,M.chrome,side*1.28,2.45,-1.7);
+ box(chassis,.32,.1,.48,M.black,side*1.1,1.35,-.5);
+ box(chassis,.1,1.3,.1,M.chrome,side*1.05,2.1,.35);
+}
+
+/* Trailer */
+const trailerMat=mat(0xe3e2d8,.55,.08);
+box(chassis,2.4,2.65,6.7,trailerMat,0,2.45,4.85);
+box(chassis,2.42,.14,6.7,M.blue,0,1.1,4.85);
+
+for(const side of [-1,1]){
+ for(const z of [1.8,3.6,5.4,7.2]){
+  box(chassis,.07,2.5,.07,M.chrome,side*1.22,2.45,z);
+ }
+}
+
+/* Wheels */
+const wheels=[];
+
+function wheel(x,z){
+ const tire=new THREE.Mesh(
+  new THREE.CylinderGeometry(.48,.48,.34,20),M.rubber
+ );
+ tire.rotation.z=Math.PI/2;
+ tire.position.set(x,.53,z);
+ tire.castShadow=true;
+ chassis.add(tire);
+ wheels.push(tire);
+
+ const hub=new THREE.Mesh(
+  new THREE.CylinderGeometry(.23,.23,.36,16),M.chrome
+ );
+ hub.rotation.z=Math.PI/2;
+ hub.position.copy(tire.position);
+ chassis.add(hub);
+}
+
+for(const z of [-1.55,.15,3.45,4.85,6.25,7]){
+ wheel(-1.22,z);
+ wheel(1.22,z);
+}
+
+/* Road sign */
+const sign=new THREE.Group();
+box(sign,3,.95,.15,M.blue,0,3,0);
+box(sign,.12,2.3,.12,M.chrome,0,1.45,0);
+box(sign,2.45,.07,.04,M.white,0,3.15,-.09);
+sign.position.set(9,0,-45);
+scene.add(sign);
+
+/* DRIVING STATE */
+let speed=0;
+let steer=0;
+let distance=0;
+let camMode=0;
+let started=false;
+let engineOn=false;
+let engineRPM=0;
+
+let transmission="manual"; // Manual is the default
+let currentGear=0;         // Neutral or gears 1-12
+let clutch=0;              // 0 released, 1 pressed
+let autoRange="D";
+let autoGear=1;
+let autoShiftTimer=0;
+
+const gearRatios=[
+ 0,12,9,6.8,5.2,4,3.2,2.6,2.1,1.7,1.4,1.15,.95
 ];
 
-function shiftGear(gear) {
-  if (gear >= 0 && gear <= 12) {
-    currentGear = gear;
-  }
+const held={
+ left:false,right:false,gas:false,brake:false
+};
+
+function shiftGear(next){
+ if(transmission!=="manual")return;
+ if(!engineOn)return;
+ if(clutch<.5 && speed>.5){
+  $("hint").textContent="Press and hold CLUTCH before changing gear";
+  return;
+ }
+ currentGear=Math.max(0,Math.min(12,next));
 }
-document.getElementById('gearUp').addEventListener('click', () => {
-  if (clutch > 0.5 || speed < 0.5) {
-    shiftGear(Math.min(12, currentGear + 1));
-  }
+
+function startEngine(){
+ engineOn=true;
+ engineRPM=800;
+ $("restartBtn").textContent="ENGINE ON";
+ $("hint").textContent="Engine running • Select gear and drive";
+}
+
+function stopEngine(){
+ engineOn=false;
+ engineRPM=0;
+ speed=0;
+ $("restartBtn").textContent="START ENGINE";
+ $("hint").textContent="Engine stalled • Press START ENGINE";
+}
+
+$("gearUp").addEventListener("click",()=>shiftGear(currentGear+1));
+$("gearDown").addEventListener("click",()=>shiftGear(currentGear-1));
+
+const clutchBtn=$("clutchBtn");
+
+function releaseClutch(){
+ clutch=0;
+ clutchBtn.classList.remove("down");
+}
+
+clutchBtn.addEventListener("pointerdown",e=>{
+ e.preventDefault();
+ if(transmission!=="manual")return;
+ clutch=1;
+ clutchBtn.classList.add("down");
+ try{clutchBtn.setPointerCapture(e.pointerId)}catch(_){}
 });
 
-document.getElementById('gearDown').addEventListener('click', () => {
-const clutchBtn = document.getElementById('clutchBtn');
+clutchBtn.addEventListener("pointerup",releaseClutch);
+clutchBtn.addEventListener("pointercancel",releaseClutch);
+clutchBtn.addEventListener("lostpointercapture",releaseClutch);
+window.addEventListener("pointerup",releaseClutch);
 
-clutchBtn.addEventListener('pointerdown', (e) => {
+$("restartBtn").addEventListener("click",()=>{
+ if(!engineOn)startEngine();
+ else $("hint").textContent="Engine running";
+});
+
+/* TRANSMISSION SETTINGS */
+function applyTransmission(mode){
+ transmission=mode;
+ releaseClutch();
+
+ $("manualControls").classList.toggle("hide",mode!=="manual");
+ $("autoControls").classList.toggle("hide",mode!=="automatic");
+
+ if(mode==="manual"){
+  autoRange="D";
+  currentGear=0;
+  $("hint").textContent="Manual mode • Press clutch and select a gear";
+ }else{
+  autoRange="D";
+  autoGear=1;
+  $("hint").textContent="Automatic mode • Select D and hold GAS";
+ }
+
+ updateHUD();
+}
+
+$("start").addEventListener("click",()=>{
+ applyTransmission($("startMode").value);
+ started=true;
+ $("intro").classList.add("hide");
+ if(!engineOn)startEngine();
+});
+
+$("settingsButton").addEventListener("click",()=>{
+ $("transmission").value=transmission;
+ $("settings").classList.remove("hide");
+});
+
+$("applySettings").addEventListener("click",()=>{
+ applyTransmission($("transmission").value);
+ $("settings").classList.add("hide");
+});
+
+$("closeSettings").addEventListener("click",()=>{
+ $("settings").classList.add("hide");
+});
+
+document.querySelectorAll("[data-range]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  if(transmission!=="automatic")return;
+  if(speed>2){
+   $("hint").textContent="Slow down before selecting a range";
+   return;
+  }
+  autoRange=button.dataset.range;
+  if(autoRange==="D")autoGear=1;
+  speed=0;
+  updateHUD();
+ });
+});
+
+/* TOUCHSCREEN AND KEYBOARD CONTROLS */
+document.querySelectorAll("[data-control]").forEach(button=>{
+ const key=button.dataset.control;
+
+ const down=e=>{
   e.preventDefault();
-  clutch = 1;
-  clutchBtn.classList.add('down');
+  held[key]=true;
+  button.classList.add("down");
+  try{button.setPointerCapture(e.pointerId)}catch(_){}
+ };
+
+ const up=e=>{
+  e.preventDefault();
+  held[key]=false;
+  button.classList.remove("down");
+ };
+
+ button.addEventListener("pointerdown",down);
+ button.addEventListener("pointerup",up);
+ button.addEventListener("pointercancel",up);
+ button.addEventListener("lostpointercapture",up);
 });
 
-function releaseClutch() {
-  clutch = 0;
-  clutchBtn.classList.remove('down');
+function keyMap(e){
+ return {
+  ArrowLeft:"left",a:"left",
+  ArrowRight:"right",d:"right",
+  ArrowUp:"gas"," ":"gas",
+  ArrowDown:"brake",s:"brake"
+ }[e.key];
 }
 
-clutchBtn.addEventListener('pointerup', releaseClutch);
-clutchBtn.addEventListener('pointercancel', releaseClutch);
-clutchBtn.addEventListener('lostpointercapture', releaseClutch);
-  
-  if (clutch > 0.5 || speed < 0.5) {
-    shiftGear(Math.max(0, currentGear - 1));
-  }
+window.addEventListener("keydown",e=>{
+ const k=keyMap(e);
+ if(k){held[k]=true;e.preventDefault()}
+ if(e.repeat)return;
+ if(e.key==="Shift")shiftGear(currentGear+1);
+ if(e.key==="Control")shiftGear(currentGear-1);
+ if(e.key.toLowerCase()==="c"){
+  camMode=(camMode+1)%2;
+  updateCameraButton();
+ }
 });
 
-const cameraBtn=document.getElementById('camera');cameraBtn.addEventListener('click',()=>{camMode=(camMode+1)%2;cameraBtn.textContent='CAMERA: '+(camMode?'CABIN':'CHASE')});
-const intro=document.getElementById('intro');document.getElementById('start').addEventListener('click',()=>{started=true;intro.classList.add('hide');document.getElementById('hint').textContent='Drive safely! Follow the road and enjoy Zambia.';setTimeout(()=>document.getElementById('hint').style.opacity='.35',5000)});
-document.querySelectorAll('[data-control]').forEach(b=>{const k=b.dataset.control;const down=e=>{e.preventDefault();held[k]=true;b.classList.add('down');try{b.setPointerCapture(e.pointerId)}catch(_){}};const up=e=>{e.preventDefault();held[k]=false;b.classList.remove('down')};b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up)});
-addEventListener('keydown',e=>{const map={ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right',ArrowUp:'gas',' ':'gas',ArrowDown:'brake',s:'brake'};if(map[e.key]){held[map[e.key]]=true;e.preventDefault()}});addEventListener('keyup',e=>{const map={ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right',ArrowUp:'gas',' ':'gas',ArrowDown:'brake',s:'brake'};if(map[e.key])held[map[e.key]]=false});
-function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);
-const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);if(started){
-if(started){
-  if(engineOn){
-    if(held.gas){
-      if(currentGear===0 && clutch<0.5){
-        engineOn=false;
-        engineRPM=0;
-        speed=0;
-      }else if(currentGear>0 && clutch<0.5){
-        speed+=0.003*currentGear;
-      }else if(clutch>=0.5){
-        speed+=0.001;
-      }
-    }
+window.addEventListener("keyup",e=>{
+ const k=keyMap(e);
+ if(k)held[k]=false;
+});
 
-    if(held.brake){
-      speed-=0.01;
-    }
+$("camera").addEventListener("click",()=>{
+ camMode=(camMode+1)%2;
+ updateCameraButton();
+});
+
+function updateCameraButton(){
+ $("camera").textContent="CAMERA: "+(camMode?"CABIN":"CHASE");
+}
+
+/* PHYSICS */
+function updatePhysics(dt){
+ if(!started||!engineOn){
+  speed*=Math.pow(.985,dt*60);
+  return;
+ }
+
+ const gas=held.gas;
+ const brake=held.brake;
+
+ let throttle=gas?1:0;
+ let driveForce=0;
+ let maxSpeed=0;
+
+ if(transmission==="manual"){
+  const ratio=gearRatios[currentGear]||0;
+
+  if(currentGear===0){
+   driveForce=0;
+   if(gas){
+    engineRPM=Math.min(2400,engineRPM+850*dt);
+   }else{
+    engineRPM=Math.max(800,engineRPM-1000*dt);
+   }
+  }else if(clutch>.5){
+   engineRPM=gas?Math.min(2400,800+gas*1200):800;
+   driveForce=0;
   }else{
-    speed*=0.98;
+   maxSpeed=14+currentGear*9;
+   driveForce=gas?(.65+ratio*.07):0;
+
+   const expectedRPM=800+Math.abs(speed)*ratio*8;
+   engineRPM=gas
+    ?Math.min(2400,Math.max(800,expectedRPM+500))
+    :Math.min(2200,Math.max(800,expectedRPM));
   }
 
-  speed=Math.max(0,Math.min(speed,0.8));
-}
-  recycle road and roadside details around player
-if(road.position.z-truck.position.z>100) road.position.z-=650;
-if(road.position.z-truck.position.z< -500) road.position.z+=650;
-for(const d of dashes){if(d.position.z-truck.position.z>30)d.position.z-=650;if(d.position.z-truck.position.z< -620)d.position.z+=650}
-for(const s of scenery){if(s.position.z-truck.position.z>45)s.position.z-=650;if(s.position.z-truck.position.z< -620)s.position.zcamera
-if(sign.position.z-truck.position.z>40)sign.position.z-=650;
-}
-const targetZ=truck.position.z;if(camMode===0){const desired=new THREE.Vector3(truck.position.x+steer*1.4,5.8,targetZ+11.5);camera.position.lerp(desired,.08);camera.lookAt(truck.position.x,1.6,targetZ-5)}else{const pos=new THREE.Vector3(0,3.0,-1.0);pos.applyMatrix4(chassis.matrixWorld);camera.position.lerp(new THREE.Vector3(truck.position.x,truck.position.y+3.0,targetZ-.6),.2);camera.lookAt(truck.position.x,2.6,targetZ-25)}
-// sky light / update HUD
-document.getElementById('speed').textContent=Math.round(speed);document.getElementById('gear').textContent =
-  'GEAR: ' + (currentGear === 0 ? 'N' : currentGear);document.getElementById('distance').textContent=(travel/1000).toFixed(2);renderer.render(scene,camera)}
-// initialize truck a short distance in front of camera
-truck.position.set(0,0,0);camera.position.set(0,6,12);camera.lookAt(0,1,-6);animate();
-})();
-</script></body></html>
+  // Engine stalls when the clutch is released in gear
+  // at a near standstill without enough throttle.
+  if(currentGear>0 && clutch<.5 && speed<1.1 && !gas){
+   stopEngine();
+   return;
+  }
+
+ }else{
+  // Automatic gearbox
+  if(autoRange==="N"){
+   driveForce=0;
+   engineRPM=gas?Math.min(2400,800+gas*1200):800;
+  }else{
+   const reverse=autoRange==="R";
+   const absSpeed=Math.abs(speed);
+
+   if(!reverse){
+    autoShiftTimer-=dt;
+    if(autoShiftTimer<=0){
+     if(absSpeed>autoGear*17 && autoGear<12){
+      autoGear++;
+      autoShiftTimer=.5;
+     }else if(absSpeed<(autoGear-1)*13 && autoGear>1){
+      autoGear--;
+      autoShiftTimer=.5;
+     }
+    }
+   }else{
+    autoGear=1;
+   }
+
+   maxSpeed=reverse?12:14+autoGear*9;
+   driveForce=gas?(reverse?-.8:.8):0;
+   engineRPM=gas
+    ?Math.min(2300,950+absSpeed*22)
+    :Math.max(800,850+absSpeed*8);
+  }
+ }
+
+ if(brake){
+  speed*=Math.pow(.90,dt*60);
+ }else if(gas&&driveForce!==0){
+  speed+=driveForce*dt*5.5;
+ }else{
+  speed*=Math.pow(.995,dt*60);
+ }
+
+ if(transmission==="automatic"&&autoRange==="R"){
+  speed=Math.max(-12,speed);
+ }else{
+  speed=Math.max(0,speed);
+ }
+
+ if(maxSpeed>0&&transmission==="manual"){
+  speed=Math.min(speed,maxSpeed);
+ }else if(maxSpeed>0&&transmission==="automatic"&&autoRange==="D"){
+  speed=Math.min(speed,maxSpeed);
+ }
+
+ if(transmission==="manual"&&(currentGear===0||clutch>.5)){
+  speed*=Math.pow(.94,dt*60);
+ }
+
+ // Keep the prototype's speed within a controllable range.
+ speed=Math.max(-12,Math.min(speed,115));
+
+ // Smooth steering and prevent unrealistic instant lane changes.
+ const steeringInput=(held.left?1:0)-(held.right?1:0);
+ steer+=(steeringInput-steer)*Math.min(1,dt*4);
+
+ truck.position.x+=steer*dt*Math.min(5,Math.abs(speed)*.12);
+ truck.position.x=Math.max(-4.2,Math.min(4.2,truck.position.x));
+
+ // Rolling world: the truck advances through the landscape.
+ const worldStep=speed*dt*.65;
+ const forwardWorldStep=Math.abs(worldStep);
+
+ distance+=Math.max(0,speed)*dt/3600*1000;
+
+ road.position.z+=worldStep;
+ soil.position.z+=worldStep;
+ sign.position.z+=w
