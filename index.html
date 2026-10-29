@@ -86,6 +86,23 @@ document.getElementById('gearUp').addEventListener('click', () => {
 });
 
 document.getElementById('gearDown').addEventListener('click', () => {
+const clutchBtn = document.getElementById('clutchBtn');
+
+clutchBtn.addEventListener('pointerdown', (e) => {
+  e.preventDefault();
+  clutch = 1;
+  clutchBtn.classList.add('down');
+});
+
+function releaseClutch() {
+  clutch = 0;
+  clutchBtn.classList.remove('down');
+}
+
+clutchBtn.addEventListener('pointerup', releaseClutch);
+clutchBtn.addEventListener('pointercancel', releaseClutch);
+clutchBtn.addEventListener('lostpointercapture', releaseClutch);
+  
   if (clutch > 0.5 || speed < 0.5) {
     shiftGear(Math.max(0, currentGear - 1));
   }
