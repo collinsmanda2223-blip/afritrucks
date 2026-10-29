@@ -124,12 +124,13 @@ if(started){
 if(road.position.z-truck.position.z>100) road.position.z-=650;
 if(road.position.z-truck.position.z< -500) road.position.z+=650;
 for(const d of dashes){if(d.position.z-truck.position.z>30)d.position.z-=650;if(d.position.z-truck.position.z< -620)d.position.z+=650}
-for(const s of scenery){if(s.position.z-truck.position.z>45)s.position.z-=650;if(s.position.z-truck.position.z< -620)s.position.z+=650}
+for(const s of scenery){if(s.position.z-truck.position.z>45)s.position.z-=650;if(s.position.z-truck.position.z< -620)s.position.zcamera
 if(sign.position.z-truck.position.z>40)sign.position.z-=650;
 }
 const targetZ=truck.position.z;if(camMode===0){const desired=new THREE.Vector3(truck.position.x+steer*1.4,5.8,targetZ+11.5);camera.position.lerp(desired,.08);camera.lookAt(truck.position.x,1.6,targetZ-5)}else{const pos=new THREE.Vector3(0,3.0,-1.0);pos.applyMatrix4(chassis.matrixWorld);camera.position.lerp(new THREE.Vector3(truck.position.x,truck.position.y+3.0,targetZ-.6),.2);camera.lookAt(truck.position.x,2.6,targetZ-25)}
 // sky light / update HUD
-document.getElementById('speed').textContent=Math.round(speed);document.getElementById('gear').textContent='GEAR: '+(speed<.5?'N':speed<8?'1':speed<16?'2':'3');document.getElementById('distance').textContent=(travel/1000).toFixed(2);renderer.render(scene,camera)}
+document.getElementById('speed').textContent=Math.round(speed);document.getElementById('gear').textContent =
+  'GEAR: ' + (currentGear === 0 ? 'N' : currentGear);document.getElementById('distance').textContent=(travel/1000).toFixed(2);renderer.render(scene,camera)}
 // initialize truck a short distance in front of camera
 truck.position.set(0,0,0);camera.position.set(0,6,12);camera.lookAt(0,1,-6);animate();
 })();
