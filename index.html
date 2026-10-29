@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#102b35"><title>AfriTrucks — Zambia Run</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#9bd4ed;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;touch-action:none}#game{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}#hud{position:fixed;inset:0;pointer-events:none;color:#fff;text-shadow:0 2px 5px #071a20} .top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.brand,.mission,.speedbox{background:#102b35d9;border:1px solid #ffffff35;border-radius:14px;padding:10px 12px;backdrop-filter:blur(6px)}.brand strong{display:block;font-size:18px;letter-spacing:.7px}.brand small,.mission small{opacity:.82}.mission{max-width:48%;font-size:12px}.speedbox{position:absolute;left:12px;bottom:150px;min-width:105px}.speed{font-size:30px;font-weight:800;line-height:1}.speed small{font-size:11px;font-weight:500}.controls{position:fixed;left:0;right:0;bottom:16px;display:flex;justify-content:space-between;align-items:end;padding:0 14px;gap:12px;pointer-events:none}.cluster{display:flex;gap:10px;align-items:end;pointer-events:auto}.btn{border:1px solid #ffffff55;background:#102b35dc;color:white;border-radius:18px;min-width:62px;height:62px;font-size:23px;font-weight:800;box-shadow:0 5px 15px #071a2040;touch-action:none;user-select:none;-webkit-user-select:none}.btn:active,.btn.down{background:#e4a62b;color:#102b35;transform:scale(.97)}.pedal{height:74px;min-width:66px;font-size:14px}.steer{font-size:28px}.smallbtn{position:fixed;right:12px;top:94px;pointer-events:auto;height:42px;min-width:auto;padding:0 12px;font-size:12px;border-radius:12px}.hint{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#102b35b8;padding:7px 11px;border-radius:99px;font-size:11px;opacity:.92}.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;background:#071a20aa;z-index:5}.panel{max-width:440px;width:100%;background:#f5f8f6;color:#17313a;border-radius:24px;padding:24px;box-shadow:0 20px 70px #0005}.panel h1{margin:0 0 5px;font-size:30px}.panel p{line-height:1.45}.start{background:#e4a62b;color:#172e36;border:0;border-radius:14px;padding:14px 18px;font-size:16px;font-weight:800;width:100%;margin-top:8px}.muted{font-size:12px;color:#52666b}.hide{display:none!important}@media(min-width:800px){.btn{min-width:76px;height:76px}.pedal{height:82px;min-width:82px}.speedbox{bottom:125px}}
+j*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#9bd4ed;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;touch-action:none}#game{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}#hud{position:fixed;inset:0;pointer-events:none;color:#fff;text-shadow:0 2px 5px #071a20} .top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.brand,.mission,.speedbox{background:#102b35d9;border:1px solid #ffffff35;border-radius:14px;padding:10px 12px;backdrop-filter:blur(6px)}.brand strong{display:block;font-size:18px;letter-spacing:.7px}.brand small,.mission small{opacity:.82}.mission{max-width:48%;font-size:12px}.speedbox{position:absolute;left:12px;bottom:150px;min-width:105px}.speed{font-size:30px;font-weight:800;line-height:1}.speed small{font-size:11px;font-weight:500}.controls{position:fixed;left:0;right:0;bottom:16px;display:flex;justify-content:space-between;align-items:end;padding:0 14px;gap:12px;pointer-events:none}.cluster{display:flex;gap:10px;align-items:end;pointer-events:auto}.btn{border:1px solid #ffffff55;background:#102b35dc;color:white;border-radius:18px;min-width:62px;height:62px;font-size:23px;font-weight:800;box-shadow:0 5px 15px #071a2040;touch-action:none;user-select:none;-webkit-user-select:none}.btn:active,.btn.down{background:#e4a62b;color:#102b35;transform:scale(.97)}.pedal{height:74px;min-width:66px;font-size:14px}.steer{font-size:28px}.smallbtn{position:fixed;right:12px;top:94px;pointer-events:auto;height:42px;min-width:auto;padding:0 12px;font-size:12px;border-radius:12px}.hint{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#102b35b8;padding:7px 11px;border-radius:99px;font-size:11px;opacity:.92}.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:22px;background:#071a20aa;z-index:5}.panel{max-width:440px;width:100%;background:#f5f8f6;color:#17313a;border-radius:24px;padding:24px;box-shadow:0 20px 70px #0005}.panel h1{margin:0 0 5px;font-size:30px}.panel p{line-height:1.45}.start{background:#e4a62b;color:#172e36;border:0;border-radius:14px;padding:14px 18px;font-size:16px;font-weight:800;width:100%;margin-top:8px}.muted{font-size:12px;color:#52666b}.hide{display:none!important}@media(min-width:800px){.btn{min-width:76px;height:76px}.pedal{height:82px;min-width:82px}.speedbox{bottom:125px}}
 </style></head><body>
 <div id="game"></div>
 <div id="hud"><div class="top"><div class="brand"><strong>🚛 AFRITRUCKS</strong><small>ZAMBIA RUN • TEST DRIVE</small></div><div class="mission"><b>DELIVERY 01</b><br>Drive the Great North Road<br><small>Distance: <span id="distance">0.0</span> km</small></div></div><div class="speedbox"><div class="speed"><span id="speed">0</span> <small>KM/H</small></div><small id="gear">GEAR: N</small></div><button class="btn smallbtn" id="camera">CAMERA: CHASE</button><div class="hint" id="hint">Hold ▲ to accelerate • ◀ ▶ to steer</div></div>
@@ -96,8 +96,31 @@ const intro=document.getElementById('intro');document.getElementById('start').ad
 document.querySelectorAll('[data-control]').forEach(b=>{const k=b.dataset.control;const down=e=>{e.preventDefault();held[k]=true;b.classList.add('down');try{b.setPointerCapture(e.pointerId)}catch(_){}};const up=e=>{e.preventDefault();held[k]=false;b.classList.remove('down')};b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up)});
 addEventListener('keydown',e=>{const map={ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right',ArrowUp:'gas',' ':'gas',ArrowDown:'brake',s:'brake'};if(map[e.key]){held[map[e.key]]=true;e.preventDefault()}});addEventListener('keyup',e=>{const map={ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right',ArrowUp:'gas',' ':'gas',ArrowDown:'brake',s:'brake'};if(map[e.key])held[map[e.key]]=false});
 function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);
-const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);if(started){if(held.gas)speed=Math.min(34,speed+12*dt);else speed=Math.max(0,speed-2.5*dt);if(held.brake)speed=Math.max(0,speed-22*dt);const turn=(held.right?1:0)-(held.left?1:0);steer+=(turn-steer)*Math.min(1,dt*4);truck.position.x+=steer*speed*.12*dt;truck.position.x=THREE.MathUtils.clamp(truck.position.x,-5.0,5.0);truck.rotation.y=-steer*.11;travel+=speed*dt/3.6;truck.position.z=-travel; // move world backwards as truck progresses
-// recycle road and roadside details around player
+const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);if(started){
+if(started){
+  if(engineOn){
+    if(held.gas){
+      if(currentGear===0 && clutch<0.5){
+        engineOn=false;
+        engineRPM=0;
+        speed=0;
+      }else if(currentGear>0 && clutch<0.5){
+        speed+=0.003*currentGear;
+      }else if(clutch>=0.5){
+        speed+=0.001;
+      }
+    }
+
+    if(held.brake){
+      speed-=0.01;
+    }
+  }else{
+    speed*=0.98;
+  }
+
+  speed=Math.max(0,Math.min(speed,0.8));
+}
+  recycle road and roadside details around player
 if(road.position.z-truck.position.z>100) road.position.z-=650;
 if(road.position.z-truck.position.z< -500) road.position.z+=650;
 for(const d of dashes){if(d.position.z-truck.position.z>30)d.position.z-=650;if(d.position.z-truck.position.z< -620)d.position.z+=650}
