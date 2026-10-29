@@ -91,34 +91,6 @@ document.getElementById('gearDown').addEventListener('click', () => {
   }
 });
 
-const clutchBtn = document.getElementById('clutchBtn');
-
-clutchBtn.addEventListener('pointerdown', e => {
-  e.preventDefault();
-  clutch = 1;
-  clutchBtn.classList.add('down');
-});
-
-function releaseClutch() {
-  clutch = 0;
-  clutchBtn.classList.remove('down');
-}
-
-clutchBtn.addEventListener('pointerup', releaseClutch);
-clutchBtn.addEventListener('pointercancel', releaseClutch);
-clutchBtn.addEventListener('lostpointercapture', releaseClutch);
-
-document.getElementById('restartBtn').addEventListener('click', () => {
-  restartEngine();
-  document.getElementById('hint').textContent = 'Engine started!';
-});
-  
-
-function restartEngine() {
-  engineOn = true;
-  engineRPM = 800;
-  }
-  
 const cameraBtn=document.getElementById('camera');cameraBtn.addEventListener('click',()=>{camMode=(camMode+1)%2;cameraBtn.textContent='CAMERA: '+(camMode?'CABIN':'CHASE')});
 const intro=document.getElementById('intro');document.getElementById('start').addEventListener('click',()=>{started=true;intro.classList.add('hide');document.getElementById('hint').textContent='Drive safely! Follow the road and enjoy Zambia.';setTimeout(()=>document.getElementById('hint').style.opacity='.35',5000)});
 document.querySelectorAll('[data-control]').forEach(b=>{const k=b.dataset.control;const down=e=>{e.preventDefault();held[k]=true;b.classList.add('down');try{b.setPointerCapture(e.pointerId)}catch(_){}};const up=e=>{e.preventDefault();held[k]=false;b.classList.remove('down')};b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up)});
